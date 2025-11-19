@@ -8,7 +8,7 @@ This workspace contains tools to automatically generate Azure architecture diagr
 ## Environment Setup
 
 ### Python Environment
-- **Location**: `C:\Shelly\Youtube\Azure AI\Arch-diag\Arch_Diagrams\venv`
+- **Location**: `.\venv`
 - **Python Version**: 3.13.7
 - **Activation**: `.\venv\Scripts\Activate.ps1` (PowerShell)
 - **Installation**: See setup instructions below (pygraphviz requires special handling)
@@ -26,7 +26,7 @@ svg.path==7.0
 ### Initial Setup from Scratch
 ```powershell
 # 1. Create virtual environment
-cd "C:\Shelly\Youtube\Azure AI\Arch-diag\Arch_Diagrams"
+cd "path\to\Arch_Diagrams"
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 
@@ -105,7 +105,7 @@ External Repositories:
 
 #### Step 2: Run with GraphViz in PATH
 ```powershell
-cd "C:\Shelly\Youtube\Azure AI\Arch-diag\my_azure_diagrams"
+cd "path\to\my_azure_diagrams"
 .\venv\Scripts\Activate.ps1
 $env:PATH += ";C:\Program Files\Graphviz\bin"
 python <script_name>.py

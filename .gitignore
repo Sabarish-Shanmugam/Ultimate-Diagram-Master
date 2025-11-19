@@ -32,6 +32,6 @@ desktop.ini
 
 # Output files (optional - uncomment if you don't want to commit generated diagrams)
 # Output files (optional - uncomment if you don't want to commit generated diagrams)
-# generated_diagrams/*.png
-# generated_diagrams/*.dot
-# generated_diagrams/*.drawio
+generated_diagrams/*.png
+generated_diagrams/*.dot
+generated_diagrams/*.drawio
