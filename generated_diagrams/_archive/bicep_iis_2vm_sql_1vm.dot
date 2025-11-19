@@ -1,0 +1,205 @@
+digraph "IIS 2VM + SQL 1VM (Bicep Demo)" {
+	graph [bb="0,0,911.7,1249.2",
+		bgcolor=white,
+		fontcolor="#2D3436",
+		fontname="Sans-Serif",
+		fontsize=12,
+		label="IIS 2VM + SQL 1VM (Bicep Demo)",
+		lheight=0.22,
+		lp="455.85,11.875",
+		lwidth=2.53,
+		nodesep=0.8,
+		pad=0.5,
+		rankdir=LR,
+		ranksep=1.0,
+		splines=ortho
+	];
+	node [fixedsize=true,
+		fontcolor="#2D3436",
+		fontname="Sans-Serif",
+		fontsize=13,
+		height=1.4,
+		imagescale=true,
+		label="\N",
+		labelloc=b,
+		shape=box,
+		style=rounded,
+		width=1.4
+	];
+	edge [color="#7B8894"];
+	subgraph "cluster_VNet: ${envPrefixName}Vnet
+10.0.0.0/16" {
+		graph [bb="8,31.75,903.7,1104.8",
+			bgcolor="#E5F5FD",
+			fontname="Sans-Serif",
+			fontsize=12,
+			label="VNet: ${envPrefixName}Vnet
+10.0.0.0/16",
+			labeljust=l,
+			lheight=0.44,
+			lp="93.625,1085",
+			lwidth=2.16,
+			pencolor="#AEB6BE",
+			rankdir=LR,
+			shape=box,
+			style=rounded
+		];
+		subgraph "cluster_FESubnet
+10.0.0.0/24" {
+			graph [bb="16,39.75,666.4,661.75",
+				bgcolor="#EBF3E7",
+				fontname="Sans-Serif",
+				fontsize=12,
+				label="FESubnet
+10.0.0.0/24",
+				labeljust=l,
+				lheight=0.44,
+				lp="55.5,642",
+				lwidth=0.88,
+				pencolor="#AEB6BE",
+				rankdir=LR,
+				shape=box,
+				style=rounded
+			];
+			subgraph "cluster_Web AvSet & VMs" {
+				graph [bb="541.6,47.75,658.4,613.75",
+					bgcolor="#ECE8F6",
+					fontname="Sans-Serif",
+					fontsize=12,
+					label="Web AvSet & VMs",
+					labeljust=l,
+					lheight=0.22,
+					lp="596.47,601.88",
+					lwidth=1.30,
+					pencolor="#AEB6BE",
+					rankdir=LR,
+					shape=box,
+					style=rounded
+				];
+				db526bff4667452b9404764aef7a530a	[height=1.9,
+					image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/compute\availability-sets.png",
+					label=webSrvAS,
+					pos="600,123.75",
+					shape=none];
+				"3af6be2c124b4fe082fa4b078db08ef7"	[height=1.9,
+					image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/compute\vm.png",
+					label=webSrv0,
+					pos="600,318.75",
+					shape=none];
+				"36c14b4076e74c049fa6fc4ece37c93d"	[height=1.9,
+					image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/compute\vm.png",
+					label=webSrv1,
+					pos="600,513.75",
+					shape=none];
+			}
+			ef8666dbc05542f2af827a687d2879bc	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/network\network-security-groups-classic.png",
+				label=feNsg,
+				pos="74.4,334.75",
+				shape=none];
+			"859760efcb734577baed77afcb8b8ff6"	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/network\load-balancers.png",
+				label="${webLbName}",
+				pos="322.95,513.75",
+				shape=none];
+			ef8666dbc05542f2af827a687d2879bc -> "859760efcb734577baed77afcb8b8ff6"	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				pos="e,272.71,453.35 74.7,403.05 74.7,429.42 74.7,453.35 74.7,453.35 74.7,453.35 261.2,453.35 261.2,453.35"];
+			eab2090d74d94553b094e19e28d640d1	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/network\public-ip-addresses.png",
+				label=webSrvPIP,
+				pos="74.4,529.75",
+				shape=none];
+			eab2090d74d94553b094e19e28d640d1 -> "859760efcb734577baed77afcb8b8ff6"	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				pos="e,272.73,521.75 124.7,521.75 124.7,521.75 261.21,521.75 261.21,521.75"];
+			"859760efcb734577baed77afcb8b8ff6" -> "3af6be2c124b4fe082fa4b078db08ef7"	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				label="NAT / LB rule (80)",
+				lp="461.47,384",
+				pos="e,549.78,326.75 322.7,445.44 322.7,392.03 322.7,326.75 322.7,326.75 322.7,326.75 538.27,326.75 538.27,326.75"];
+			"859760efcb734577baed77afcb8b8ff6" -> "36c14b4076e74c049fa6fc4ece37c93d"	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				label="NAT / LB rule (80)",
+				lp="461.47,522",
+				pos="e,549.73,513.75 373.12,513.75 373.12,513.75 538.22,513.75 538.22,513.75"];
+		}
+		subgraph "cluster_DBSubnet
+10.0.2.0/24" {
+			graph [bb="541.6,669.75,895.7,1056.8",
+				bgcolor="#EBF3E7",
+				fontname="Sans-Serif",
+				fontsize=12,
+				label="DBSubnet
+10.0.2.0/24",
+				labeljust=l,
+				lheight=0.44,
+				lp="581.1,1037",
+				lwidth=0.88,
+				pencolor="#AEB6BE",
+				rankdir=LR,
+				shape=box,
+				style=rounded
+			];
+			ce0878c3fddf446db17b08f405959475	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/network\network-security-groups-classic.png",
+				label=dbNsg,
+				pos="600,745.75",
+				shape=none];
+			e57b49a27bae41e69f8b04a0b5f536ee	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/compute\vm.png",
+				label="${sqlSrvDBName}",
+				pos="837.3,745.75",
+				shape=none];
+			ce0878c3fddf446db17b08f405959475 -> e57b49a27bae41e69f8b04a0b5f536ee	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				pos="e,787.05,745.75 650.33,745.75 650.33,745.75 775.53,745.75 775.53,745.75"];
+			"760f909761a94bdaabbd65d5c5695908"	[height=1.9,
+				image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/azure/network\public-ip-addresses.png",
+				label="${sqlPublicIPName}",
+				pos="600,940.75",
+				shape=none];
+			"760f909761a94bdaabbd65d5c5695908" -> e57b49a27bae41e69f8b04a0b5f536ee	[dir=forward,
+				fontcolor="#2D3436",
+				fontname="Sans-Serif",
+				fontsize=13,
+				pos="e,837.7,813.95 650.12,940.75 719.86,940.75 837.7,940.75 837.7,940.75 837.7,940.75 837.7,825.47 837.7,825.47"];
+		}
+		"3af6be2c124b4fe082fa4b078db08ef7" -> e57b49a27bae41e69f8b04a0b5f536ee	[dir=forward,
+			fontcolor="#2D3436",
+			fontname="Sans-Serif",
+			fontsize=13,
+			label="SQL (1433)",
+			lp="718.65,436",
+			pos="e,853.7,677.62 650.12,318.75 724.06,318.75 853.7,318.75 853.7,318.75 853.7,318.75 853.7,666.1 853.7,666.1"];
+		"36c14b4076e74c049fa6fc4ece37c93d" -> e57b49a27bae41e69f8b04a0b5f536ee	[dir=forward,
+			fontcolor="#2D3436",
+			fontname="Sans-Serif",
+			fontsize=13,
+			label="SQL (1433)",
+			lp="718.65,626",
+			pos="e,820.7,677.4 650.36,513.75 715.49,513.75 820.7,513.75 820.7,513.75 820.7,513.75 820.7,665.88 820.7,665.88"];
+	}
+	ce2ad1c903df4f80b6fa8e79a67f6c9b	[height=1.9,
+		image="C:\Users\Venom\Downloads\Architecture_Diagrams_Python_AI-main\Arch_Diagrams\venv\Lib\site-packages\resources/onprem/client\client.png",
+		label=Users,
+		pos="74.4,1180.8",
+		shape=none];
+	ce2ad1c903df4f80b6fa8e79a67f6c9b -> "859760efcb734577baed77afcb8b8ff6"	[dir=forward,
+		fontcolor="#2D3436",
+		fontname="Sans-Serif",
+		fontsize=13,
+		label="HTTP/HTTPS",
+		lp="198.67,1189",
+		pos="e,322.7,582 124.65,1180.8 197.2,1180.8 322.7,1180.8 322.7,1180.8 322.7,1180.8 322.7,593.51 322.7,593.51"];
+}

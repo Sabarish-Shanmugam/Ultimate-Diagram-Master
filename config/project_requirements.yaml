@@ -1,0 +1,70 @@
+# Ultimate Diagram Master - Project Requirements
+
+version: "1.0"
+
+requirements:
+  # ---------------------------------------------------------------------------
+  # Architecture Requirements (Req_Arch_###)
+  # ---------------------------------------------------------------------------
+  - id: "Req_Arch_001"
+    type: "architecture"
+    name: "Core Azure Infrastructure"
+    description: "Main infrastructure including VNet, Subnets, and core services."
+    source: "./demo_iac/terraform/main.tf"  # Path to your IaC file (Terraform, Bicep, ARM)
+    output_formats: ["png", "dot"] # PDF might fail if graphviz not fully setup, stick to png/dot for now
+
+  # ---------------------------------------------------------------------------
+  # Data Flow Requirements (Req_DFD_###)
+  # ---------------------------------------------------------------------------
+  - id: "Req_DFD_001"
+    type: "data_flow"
+    parent_ref: "Req_Arch_001" # Links to the architecture above
+    name: "Order Processing Data Flow"
+    description: "Visualizes how order data flows from Web App to Database."
+    mappings:
+      - source: "Web App"
+        target: "SQL Database"
+        data: "Order Details"
+        protocol: "HTTPS/TDS"
+
+  # ---------------------------------------------------------------------------
+  # Business Process Requirements (Req_BPMN_###)
+  # ---------------------------------------------------------------------------
+  - id: "Req_BPMN_001"
+    type: "business_process"
+    parent_ref: "Req_Arch_001" # Links to the architecture context
+    name: "Order Fulfillment Process"
+    description: "Business process for handling new customer orders."
+    lanes:
+      - name: "Customer"
+        role: "User"
+      - name: "System"
+        role: "Automated"
+    steps:
+      - name: "Submit Order"
+        lane: "Customer"
+        type: "start"
+        next: "Check Inventory"
+      - name: "Check Inventory"
+        lane: "System"
+        type: "task"
+        next: "Inventory Available?"
+      - name: "Inventory Available?"
+        lane: "System"
+        type: "gateway"
+        conditions:
+          - label: "Yes"
+            next: "Process Payment"
+          - label: "No"
+            next: "Notify Out of Stock"
+      - name: "Process Payment"
+        lane: "System"
+        type: "task"
+        next: "End Order"
+      - name: "Notify Out of Stock"
+        lane: "System"
+        type: "task"
+        next: "End Order"
+      - name: "End Order"
+        lane: "System"
+        type: "end"

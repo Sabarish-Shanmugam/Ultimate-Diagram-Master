@@ -1,0 +1,110 @@
+# =============================================================================
+#  ULTIMATE DIAGRAM MASTER - CONFIGURATION
+# =============================================================================
+#
+#  Welcome! This file tells the tool what diagrams you want to create.
+#  It is written in YAML, which is just text with indentation.
+#
+#  INSTRUCTIONS:
+#  1. Copy the examples below.
+#  2. Change the values (like 'name' or 'source') to match your project.
+#  3. Save this file.
+#
+# =============================================================================
+
+version: "1.0"
+
+requirements:
+
+  # ===========================================================================
+  #  1. ARCHITECTURE DIAGRAMS (From Code)
+  # ===========================================================================
+  #  Use this to visualize your Infrastructure-as-Code (Terraform, Bicep, etc.)
+  
+  - id: "Req_Arch_001"                  # Unique ID for this diagram
+    type: "architecture"                # Do not change this
+    name: "My Azure Infrastructure"     # Title of your diagram
+    description: "Main cloud setup."    # Optional description
+    
+    # PATH TO YOUR CODE FILE
+    # Example: "../my-project/main.tf" or "C:/Projects/infra/main.bicep"
+    source: "./demo_iac/terraform/main.tf" 
+    
+    # OUTPUT FORMATS (png, dot, pdf)
+    output_formats: ["png", "dot"]
+
+
+  # ===========================================================================
+  #  2. DATA FLOW DIAGRAMS (Logical Flow)
+  # ===========================================================================
+  #  Use this to show how data moves between parts of your system.
+  #  Link it to an architecture diagram using 'parent_ref'.
+
+  - id: "Req_DFD_001"
+    type: "data_flow"
+    parent_ref: "Req_Arch_001"          # Links to the architecture above
+    name: "Order Data Flow"
+    
+    # DEFINE THE FLOWS HERE
+    mappings:
+      - source: "Web App"               # Where data comes from
+        target: "SQL Database"          # Where data goes to
+        data: "Order Details"           # What data is moving
+        protocol: "HTTPS"               # How it moves (optional)
+      
+      - source: "User"
+        target: "Web App"
+        data: "Click Submit"
+
+
+  # ===========================================================================
+  #  3. BUSINESS PROCESS (BPMN)
+  # ===========================================================================
+  #  Use this to show the step-by-step business logic.
+  
+  - id: "Req_BPMN_001"
+    type: "business_process"
+    parent_ref: "Req_Arch_001"
+    name: "Order Fulfillment Process"
+    
+    # DEFINE LANES (Who does the work?)
+    lanes:
+      - name: "Customer"
+        role: "User"
+      - name: "System"
+        role: "Automated"
+        
+    # DEFINE STEPS (What happens?)
+    steps:
+      - name: "Submit Order"
+        lane: "Customer"
+        type: "start"
+        next: "Check Inventory"
+        
+      - name: "Check Inventory"
+        lane: "System"
+        type: "task"
+        next: "Inventory Available?"
+        
+      - name: "Inventory Available?"
+        lane: "System"
+        type: "gateway"                 # A decision point
+        conditions:
+          - label: "Yes"
+            next: "Process Payment"
+          - label: "No"
+            next: "Notify Out of Stock"
+            
+      - name: "Process Payment"
+        lane: "System"
+        type: "task"
+        next: "End Order"
+        
+      - name: "Notify Out of Stock"
+        lane: "System"
+        type: "task"
+        next: "End Order"
+        
+      - name: "End Order"
+        lane: "System"
+        type: "end"
